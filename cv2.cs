@@ -1,15 +1,18 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 class Program
 {
-    static void Task1()
+    static char Task1(string read_s)
     {
-        string read_s = Console.ReadLine();
         string s = read_s.ToLower();
         int[] stat = new int[256 * 256];
         for (int i = 0; i < stat.Length; i++)
@@ -32,11 +35,12 @@ class Program
         }
 
         Console.WriteLine("В слове '{0}' самая частая буква '{1}'. Кол-во повторений: {2}", read_s, max_c, max_val);
+        return max_c;
     }
 
     static string Task2(string s)
     {
-        
+       
         string res = "";
         int diff = 1071 - 1040 + 1;
         for (int i = 0; i < s.Length; i++)
@@ -54,8 +58,7 @@ class Program
                 {
                     code -= diff;
                 }
-            } else {  
-            
+            } else { 
                 code += 10;
                 if (code > 1071)
                 {
@@ -80,19 +83,55 @@ class Program
             File.Create(dirName + "\\cw2_2.json");
     }
 
+
     static void Task4()
     {
         string dirName = "R:\\Solution"; 
         if (!Directory.Exists(dirName))
             Directory.CreateDirectory(dirName);
-        if (File.Exists(dirName + "\\cw2_1.json"))
+        if (!File.Exists(dirName + "\\cw2_1.json"))
         {
-            
+            string s = "Hello, world!";
+            char res = Task1(s);
+
+            string json = $" {{ \"input\" : \"{s}\", \"output\" : \"{res}\" }}";
+            Console.WriteLine($"JSON 1: {json}");
+
+            File.WriteAllText(dirName + "\\cw2_1.json", json);
+
+
+        } else
+        {
+            FileStream fstream = new FileStream(dirName + "\\cw2_1.json", FileMode.Open);
+            byte[] buffer = new byte[fstream.Length];
+            fstream.Read(buffer, 0, buffer.Length);
+            string json = Encoding.Default.GetString(buffer);
+            Console.WriteLine($"JSON 1: {json}");
         }
+
+        if (!File.Exists(dirName + "\\cw2_2.json"))
+        {
+            string s = "Алфавит Цезаря!";
+            string res = Task2(s);
+
+            string json = $" {{ \"input\" : \"{s}\", \"output\" : \"{res}\" }}";
+            Console.WriteLine($"JSON 2: {json}");
+
+            File.WriteAllText(dirName + "\\cw2_2.json", json);
+        }
+        else
+        {
+            FileStream fstream = new FileStream(dirName + "\\cw2_2.json", FileMode.Open);
+            byte[] buffer = new byte[fstream.Length];
+            fstream.Read(buffer, 0, buffer.Length);
+            string json = Encoding.Default.GetString(buffer);
+            Console.WriteLine($"JSON 2: {json}");
+        }
+
     }
 
     static void Main(string[] args)
     {
-        Task3();
+        Task4();
     }
 }

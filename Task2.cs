@@ -7,9 +7,8 @@ class Program
     {
         private string surname;
         private double[] jumps;
-        public double result { get; set; }
-
-        protected string title;
+        private double result;
+        private string title;
 
         public JumpData(string surname, string title)
         {
@@ -23,6 +22,11 @@ class Program
                 jumps[i] = rand.NextDouble() * 20 + 50;
                 result = Math.Min(result, jumps[i]);
             }
+        }
+
+        public double getResult()
+        {
+            return result;
         }
 
         public void show()
@@ -70,8 +74,8 @@ class Program
             int surname = rand.Next(surnames.Length);
             data_up[i] = new JumpUp(surnames[surname]);
         }
-        var query_forward = data_forward.OrderBy(x => x.result);
-        var query_up = data_up.OrderBy(x => x.result);
+        var query_forward = data_forward.OrderBy(x => x.getResult());
+        var query_up = data_up.OrderBy(x => x.getResult());
         Console.WriteLine("Прыжки в длину");
         foreach (JumpData item in query_forward)
         {

@@ -9,8 +9,7 @@ namespace ConsoleApp1
         abstract class BaseData
         {
             protected string name;
-            public double time;
-
+            protected double time;
             protected int distance;
 
             protected BaseData(string name, double time, int distance)
@@ -18,6 +17,11 @@ namespace ConsoleApp1
                 this.name = name;
                 this.time = time;
                 this.distance = distance;
+            }
+
+            public double getTime()
+            {
+                return time;
             }
 
             public void show()
@@ -64,8 +68,8 @@ namespace ConsoleApp1
                 string surname = surnames[rand.Next(surnames.Length - 1)];
                 rd500[i] = new Run500(surname, rand.NextDouble() * 10 + 70);
             }
-            var query1 = rd100.OrderBy(x => x.time);
-            var query2 = rd500.OrderBy(x => x.time);
+            var query1 = rd100.OrderBy(x => x.getTime());
+            var query2 = rd500.OrderBy(x => x.getTime());
             Console.WriteLine("Бег 100м.");
             foreach (BaseData item in query1) item.show();
             Console.WriteLine("Бег 500м.");
